@@ -11,3 +11,42 @@ Enter a number: done
 Maximum: 9.0
 Minimum: 2.0
 '''
+
+def prompt_user_for_numbers():
+    
+    numbers = list()
+    user_input = 0
+
+    while True:
+
+        user_input = input("Enter a number: ")
+
+        if user_input in ('done', 'Done'):
+            break
+        
+        try:
+            input_number = int(user_input)
+        except:
+            print("Not a number.")
+            continue
+
+        numbers.append(input_number)
+    
+    return numbers
+
+def print_results(number_list):
+
+    print("Maximum:", max(number_list))
+    print("Minimum:", min(number_list))
+    return
+
+def main():
+
+    number_list = prompt_user_for_numbers()
+
+    print_results(number_list)
+
+    return
+
+if __name__ == "__main__":
+    main()
