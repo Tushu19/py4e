@@ -24,8 +24,8 @@ def count_letters_from_text_line(text_line):
 
 
 def main(arguments):
-    email_file_handle = utils.open_file_to_handle(arguments)
-    result_dict = utils.process_text_file_to_dict(email_file_handle, count_letters_from_text_line)
+    text_file_handle = utils.open_file_to_handle(arguments)
+    result_dict = utils.process_text_file_to_dict(text_file_handle, count_letters_from_text_line)
     sorted_by_values = utils.sort_dict_by_values(result_dict, use_reverse_order=True)
     utils.print_dict_by_line(sorted_by_values)
     return
