@@ -40,4 +40,42 @@ def open_file_to_handle(command_line_arguments):
 
 def is_proper_sender_line(email_line_string):
     word_list = email_line_string.split()
-    return (len(word_list) > 2 and word_list[0] == "From") 
+    return (len(word_list) > 2 and word_list[0] == "From")
+
+
+def process_sender_lines_to_dict(email_file, process_line_function):
+    result_dictionary = dict()
+
+    for line in email_file:
+        if is_proper_sender_line(line):
+            metric_key = process_line_function(line)
+            result_dictionary[metric_key] = result_dictionary.get(metric_key, 0) + 1
+    
+    return result_dictionary
+
+
+def process_text_file_to_dict(text_file, process_line_to_dict_function):
+    result_dict = dict()
+    
+    for line in text_file:
+        line_results_dict = process_line_to_dict_function(line)
+    
+        for key, value in line_results_dict.items():
+            result_dict[key] = result_dict.get(key, 0) + value
+    
+    return result_dict
+
+
+def sort_dict_by_keys(input_dict, use_reverse_order = False):
+    sorted_by_key = sorted([(key, value) for key, value in input_dict.items()], reverse = use_reverse_order)
+    return dict(sorted_by_key)
+
+
+def sort_dict_by_values(input_dict, use_reverse_order = False):
+    sorted_by_value = sorted([(value, key) for key, value in input_dict.items()], reverse = use_reverse_order)
+    return dict([(key, value) for value, key in sorted_by_value])
+    
+
+def print_dict_by_line(dict_to_print):
+    for key, value in dict_to_print.items():
+        print(key, value)
