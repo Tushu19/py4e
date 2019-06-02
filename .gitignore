@@ -2,6 +2,7 @@
 __*/
 
 # Ignore test data files provided in course
-mbox-short.txt
-mbox.txt
 data/
+
+# Ignore example code files provided in the course
+examples/
