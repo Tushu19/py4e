@@ -49,6 +49,12 @@ from bs4 import BeautifulSoup
 import ssl
 import sys
 
+def main():
+    initial_url = get_url()
+    (depth_count, position_in_links) = get_depth_and_position()
+    find_name_at_depth_and_position(initial_url, depth_count, position_in_links)
+    return
+
 def get_url():
     url = input('Enter URL: ')
     return url
@@ -75,23 +81,21 @@ def get_depth_and_position():
     
     return (depth_count, position_in_links)
 
-def find_known_name_at_depth_and_position(initial_url, depth_count, position_in_links):
+def find_name_at_depth_and_position(initial_url, depth_count, position_in_links):
     ssl_context = set_ignore_ssl_context()
 
     next_url = initial_url
 
-    for step in range(0, depth_count - 1):
+    for step in range(0, depth_count):
         print('Retrieving:', next_url)
-        html = try_open_url(next_url, ssl_context)
+        html = open_url(next_url, ssl_context)
         soup = open_html_to_soup(html)
-        next_url = retrieve_next_url_from_anchor_tags(soup, position_in_links)
+        (next_name, next_url) = retrieve_next_from_anchor_tags(soup, position_in_links)
     
     print('Retrieving:', next_url)
-    html = try_open_url(next_url, ssl_context)
-    soup = open_html_to_soup(html)
-    known_name = retrieve_name_from_url
+    print('The answer to the assignment for this execution is "%s".' % format(next_name))
 
-    known_name = extract_
+    return next_name
 
 def set_ignore_ssl_context():
     # Ignore SSL certificate errors
@@ -100,7 +104,7 @@ def set_ignore_ssl_context():
     ctx.verify_mode = ssl.CERT_NONE
     return ctx
 
-def try_open_url(url, ssl_context):
+def open_url(url, ssl_context):
     try:
         html = urllib.request.urlopen(url, context=ssl_context).read()
     except:
@@ -113,7 +117,7 @@ def open_html_to_soup(html_document):
     soup = BeautifulSoup(html_document, 'html.parser')
     return soup
 
-def retrieve_next_url_from_anchor_tags(soup, position_in_links):
+def retrieve_next_from_anchor_tags(soup, position_in_links):
     anchor_tags = soup('a')
 
     next_url_tag = None
@@ -125,14 +129,9 @@ def retrieve_next_url_from_anchor_tags(soup, position_in_links):
         sys.exit(2)
     
     next_url = next_url_tag.get('href', None)
+    next_name = next_url_tag.contents[0]
 
-    return next_url
-    
-def main():
-    initial_url = get_url()
-    (depth_count, position_in_links) = get_depth_and_position()
-    find_known_name_at_depth_and_position(initial_url, depth_count, position_in_links)
-    return
+    return (next_name, next_url)
 
 if __name__ == "__main__":
     main()
