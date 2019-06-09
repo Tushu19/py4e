@@ -2,8 +2,8 @@
 Useful, often-repeated functions
 '''
 
-import sys, getopt
-
+import sys, getopt, sqlite3
+import xml.etree.ElementTree as ET
 
 def open_file_to_handle(command_line_arguments):
     input_file = ''
@@ -79,3 +79,14 @@ def sort_dict_by_values(input_dict, use_reverse_order = False):
 def print_dict_by_line(dict_to_print):
     for key, value in dict_to_print.items():
         print(key, value)
+
+def create_db_connection(db_address):
+    connection = sqlite3.connect(db_address)
+    cursor = connection.cursor()
+    return (connection, cursor)
+
+def open_xml(xml_handle):
+    xml_data = xml_handle.read()
+    print('Retrieved', len(xml_data), 'characters')
+    root = ET.fromstring(xml_data)
+    return root
