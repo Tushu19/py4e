@@ -94,8 +94,8 @@ def set_ssl_context_to_ignore():
     ctx.verify_mode = ssl.CERT_NONE
     return ctx
 
-def open_xml(url_handle):
-    xml_data = url_handle.read()
+def open_xml(handle):
+    xml_data = handle.read()
     print('Retrieved', len(xml_data), 'characters')
     root = ET.fromstring(xml_data)
     return root
